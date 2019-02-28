@@ -42,9 +42,12 @@ INSTALLED_APPS = [
     # 第三方包的注册
     'rest_framework',  # 注册 django rest framwork 应用
     'corsheaders',    # 解决跨域问题的第三方包
-
+    'django_filters',
     # 项目中的功能模块
     'users',
+    'carts',
+    'news',
+    'goods',
 ]
 
 MIDDLEWARE = [

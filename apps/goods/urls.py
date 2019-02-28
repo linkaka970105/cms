@@ -16,8 +16,16 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+from goods import views
 
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
     # url(r'^test/$', views.test),
+    url(r'^goods/categories/$', views.GoodsCategoryView.as_view()),
+    url(r'^goods/categories2/$', views.GoodsCategoryView2.as_view()),
+    url(r'^goods/slides/$', views.GoodsSlideView.as_view()),
+    url(r'^goods/recommend/$', views.GoodsRecommendView.as_view()),
+    url(r'^goods/$', views.GoodsListView.as_view({'get':'list'})),
+    url(r'^goods/(?P<pk>\d+)/$', views.GoodsListView.as_view({'get': 'retrieve'})),
+    url(r'^goods/bread/(?P<pk>\d+)/$', views.GoodsBreadView.as_view()),
 ]
