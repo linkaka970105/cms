@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import datetime
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 import sys
@@ -41,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 第三方包的注册
     'rest_framework',  # 注册 django rest framwork 应用
-    'corsheaders',    # 解决跨域问题的第三方包
+    'corsheaders',  # 解决跨域问题的第三方包
     'django_filters',
     # 项目中的功能模块
     'users',
@@ -178,9 +180,24 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
-#4、添加白名单
+# 4、添加白名单
 CORS_ORIGIN_WHITELIST = (
     '127.0.0.1:8080',
 )
 CORS_ALLOW_CREDENTIALS = True  # 指明在跨域访问中，后端是否支持对cookie的操作。
+
+
+REST_FRAMEWORK = {
+    # 配置项目支持的认证方式
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',  # jwt认证
+        'rest_framework.authentication.SessionAuthentication',  # 管理后台使用
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+
+}
+
+# jwt认证配置
+JWT_AUTH = {  # 导包： import datetime
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),  # jwt有效时间
+}

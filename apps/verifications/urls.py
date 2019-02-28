@@ -14,12 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
+from django.contrib import admin
 
-from users import views
+from apps.verifications import views
 
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
-    url(r'^test/$', views.test),
-    url(r'^user/count/(?P<pk>\w{5,20})$', views.CheckUsername.as_view()),
-    url(r'^user/regiuser/$', views.RegiUser.as_view()),
+    # url(r'^test/$', views.test),
+    url(r'^sms_codes/(?P<mobile>1[3-9]\d{9})/$', views.SendSmsCode.as_view()),
 ]
