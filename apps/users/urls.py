@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
+from rest_framework_jwt.views import obtain_jwt_token
 
 from users import views
 
@@ -22,4 +23,5 @@ urlpatterns = [
     url(r'^test/$', views.test),
     url(r'^user/count/(?P<pk>\w{5,20})$', views.CheckUsername.as_view()),
     url(r'^user/regiuser/$', views.RegiUser.as_view()),
+    url(r'^authorizations/$', obtain_jwt_token),
 ]

@@ -14,6 +14,8 @@ class CreateUserSerializer(ModelSerializer):
     sms_code = serializers.CharField(label='短信验证码', max_length=6, write_only=True)
     allow = serializers.BooleanField(label='是否同意协议', default=False, write_only=True)
 
+    token = serializers.CharField(label='登录状态token', read_only=True)
+
     def validate_mobile(self, value):
         if not re.match(r'^1[3-9]\d{9}$]', value):
             raise serializers.ValidationError('手机号格式错误')
@@ -61,7 +63,7 @@ class CreateUserSerializer(ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'password', 'mobile', 'password2', 'sms_code', 'allow')
+        fields = ('id', 'username', 'password', 'mobile', 'password2', 'sms_code', 'allow', 'token')
 
         extra_kwargs = {
             'username': {

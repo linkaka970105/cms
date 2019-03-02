@@ -186,7 +186,6 @@ CORS_ORIGIN_WHITELIST = (
 )
 CORS_ALLOW_CREDENTIALS = True  # 指明在跨域访问中，后端是否支持对cookie的操作。
 
-
 REST_FRAMEWORK = {
     # 配置项目支持的认证方式
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -200,4 +199,9 @@ REST_FRAMEWORK = {
 # jwt认证配置
 JWT_AUTH = {  # 导包： import datetime
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1),  # jwt有效时间
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'users.utils.jwt_response_payload_handler',
 }
+# 扩展登录接口: 使用自定义的认证后台, 使之支持可以使用用户名或手机号登录
+AUTHENTICATION_BACKENDS = [
+    'users.utils.UsernameMobileAuthBackend',
+]
