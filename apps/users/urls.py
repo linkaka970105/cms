@@ -23,5 +23,7 @@ urlpatterns = [
     url(r'^test/$', views.test),
     url(r'^user/count/(?P<pk>\w{5,20})$', views.CheckUsername.as_view()),
     url(r'^user/regiuser/$', views.RegiUser.as_view()),
+    url(r'^user/area/$', views.AreaP.as_view()),
+    url(r'^user/area/(?P<pk>\d+)/$', views.AreaC.as_view()),
     url(r'^authorizations/$', obtain_jwt_token),
 ]

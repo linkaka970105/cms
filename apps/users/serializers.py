@@ -6,7 +6,7 @@ from redis.client import StrictRedis
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 
-from users.models import User
+from users.models import User, Area, Address
 
 
 class CreateUserSerializer(ModelSerializer):
@@ -17,7 +17,7 @@ class CreateUserSerializer(ModelSerializer):
     token = serializers.CharField(label='登录状态token', read_only=True)
 
     def validate_mobile(self, value):
-        if not re.match(r'^1[3-9]\d{9}$]', value):
+        if not re.match(r'^1[3-9]\d{9}$', value):
             raise serializers.ValidationError('手机号格式错误')
 
         return value
@@ -84,3 +84,27 @@ class CreateUserSerializer(ModelSerializer):
                 }
             }
         }
+
+
+class Area_Pro(ModelSerializer):
+    class Meta:
+        model = Area
+        fields = ('id', 'name')
+
+
+class Area_City(ModelSerializer):
+    subs = Area_Pro(many=True, read_only=True)
+
+    class Meta:
+        model = Area
+        fields = ('id', 'name', 'subs')
+
+
+class CreaListSerializer(ModelSerializer):
+    def create(self, validated_data):
+        validated_data['user'] = self.context['request'].user
+        return super().create(validated_data)
+
+    class Meta:
+        model = Address
+        exclude = ('create_time', 'update_time', 'is_deleted', 'user')

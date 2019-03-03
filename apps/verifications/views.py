@@ -1,6 +1,5 @@
 from time import sleep
 
-from django.shortcuts import render
 from django_redis import get_redis_connection
 from redis.client import StrictRedis
 from rest_framework.exceptions import ValidationError
@@ -13,6 +12,8 @@ import logging
 from asy_clelry.sms.tasks import send_sms
 
 from libs.yuntongxun.sms import CCP
+from users.models import Area
+from users.serializers import Area_Pro
 
 logger = logging.getLogger('django')
 
@@ -61,3 +62,5 @@ class SmsCodeView(APIView):
 
         # 5. 响应数据
         return Response({'message': 'OK'})
+
+
