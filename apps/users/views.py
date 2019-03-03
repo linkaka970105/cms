@@ -62,7 +62,6 @@ class Create_Area(ListCreateAPIView):
 
 class Update_Defadd(UpdateAPIView):
 
-
     serializer_class = UP_Serializer
 
     def get_object(self):
