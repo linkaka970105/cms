@@ -4,6 +4,7 @@ from django_redis import get_redis_connection
 from redis.client import StrictRedis
 
 from rest_framework import serializers
+from rest_framework.relations import StringRelatedField
 from rest_framework.serializers import ModelSerializer
 
 from users.models import User, Area, Address
@@ -101,10 +102,49 @@ class Area_City(ModelSerializer):
 
 
 class CreaListSerializer(ModelSerializer):
+    """序列时返回区域名称给前端"""
+    province = StringRelatedField(label='省', read_only=True)
+
+    city = StringRelatedField(label='市', read_only=True)
+    district = StringRelatedField(label='区', read_only=True)
+    """反序列时需要给字段增加外键"""
+    province_id = serializers.IntegerField(label='省id', write_only=True)
+    city_id = serializers.IntegerField(label='市id', write_only=True)
+    district_id = serializers.IntegerField(label='区id', write_only=True)
+
     def create(self, validated_data):
         validated_data['user'] = self.context['request'].user
         return super().create(validated_data)
 
+    def validate_mobile(self, value):
+        """验证手机号"""
+
+        #         if not re.match(r'^1[3-9]\d{9}$', value):
+        #             raise serializers.ValidationError('手机号格式错误')
+        return value
+
     class Meta:
         model = Address
         exclude = ('create_time', 'update_time', 'is_deleted', 'user')
+
+
+class UP_Serializer(serializers.Serializer):
+    default_address_id = serializers.IntegerField(label='默认地址id', write_only=True)
+
+    def validate_default_address_id(self, value):
+        try:
+            Address.objects.get(id=value, user=self.context['request'].user.id)
+        except:
+            raise serializers.ValidationError('地址id错误')
+        return value
+
+    def update(self, instance, validated_data):
+        # id = validated_data['default_address_id']
+        # a = Address.objects.get(id=id)
+        # model写了外键，实际对象，表里存的这个对象id，
+        # 修改或者新增数据，可以使用外键=对象，或者外键_id=对象id
+        # instance.default_address = a
+        instance.default_address_id = validated_data['default_address_id']
+
+        instance.save()
+        return validated_data

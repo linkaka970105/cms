@@ -25,5 +25,9 @@ urlpatterns = [
     url(r'^user/regiuser/$', views.RegiUser.as_view()),
     url(r'^user/area/$', views.AreaP.as_view()),
     url(r'^user/area/(?P<pk>\d+)/$', views.AreaC.as_view()),
+    url(r'^user/addlicr/$', views.Create_Area.as_view()),
+    url(r'^user/updad/(?P<pk>\d+)/$', views.Update_Defadd.as_view()),
+    url(r'^user/delad/(?P<pk>\d+)/$', views.DelAddr.as_view()),
+
     url(r'^authorizations/$', obtain_jwt_token),
 ]
